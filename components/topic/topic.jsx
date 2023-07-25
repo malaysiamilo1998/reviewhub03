@@ -12,6 +12,18 @@ export const getTopics = async () => {
      _id, 
      _createdAt, 
      title, 
+
+     "subtopics": *[
+      _type == "topic" &&
+      references(^._id)
+    ]{
+      _id, 
+     _createdAt, 
+     title, 
+     "slug": slug.current, 
+     "image": image.asset->url, 
+     "imgAlt": image.asset->alt, 
+    }, 
      
      "slug": slug.current, 
      "image": image.asset->url, 
@@ -54,7 +66,15 @@ const Topic = () => {
             />
             <span className='pl-1'>{topic.title}</span>
           </div>
-          <SubTopic parentId={topic._id} />
+          {topic.subtopics ? (
+            <div className='grid grid-cols-3 gap-1'>
+              {topic.subtopics.map(subtopic => (
+                <SubTopic {...subtopic} />
+              ))}
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       ))}
     </div>
