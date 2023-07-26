@@ -37,18 +37,20 @@ export const AllCompanies = () => {
         }
         return (
           <div key={company._id} className='flex-start'>
-            <Image
-              className=''
-              src={urlFor(company.image)
-                .width(250)
-                .height(250)
-                .fit('crop')
-                .crop('entropy')
-                .url()}
-              alt={company.imgAlt}
-              width={70}
-              height={70}
-            />
+            <Link href={`sponsor\\${company.slug}`}>
+              <Image
+                className=''
+                src={urlFor(company.image)
+                  .width(250)
+                  .height(250)
+                  .fit('crop')
+                  .crop('entropy')
+                  .url()}
+                alt={company.imgAlt}
+                width={70}
+                height={70}
+              />
+            </Link>
             <div className='flex flex-col flex-start px-3'>
               <div className='text-left text-sm font-semibold'>
                 {/*  */}
