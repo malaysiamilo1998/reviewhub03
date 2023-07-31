@@ -74,7 +74,10 @@ const CompanyDetails = ({ company }) => {
             {/* <span className='text-sm font-extrabold'>Backup Urls</span> */}
             {company.backupurls.map(url => {
               return (
-                <div className='flex justify-start items-center p-3 border-2 rounded-lg m-1'>
+                <div
+                  key={url}
+                  className='flex justify-start items-center p-3 border-2 rounded-lg m-1'
+                >
                   <Link href={url} className='font-extralight pl-1 text-sm'>
                     Backup Url
                   </Link>

@@ -89,7 +89,7 @@ const SponsorPage = ({ params }) => {
           {sponsor[0] && sponsor[0].games ? (
             sponsor[0].games.map(game => {
               return (
-                <div key={game._id} className='flex justify-between'>
+                <div key={game.gamename} className='flex justify-between'>
                   <Image
                     src={urlFor(game.image)
                       .width(150)
