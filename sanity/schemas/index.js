@@ -8,6 +8,7 @@ import { gametype, game } from './game-schema'
 import companyGame from './company-game'
 import { carousel } from './carousel-banner'
 import { carouselbannerimage } from './carousel-images'
+import { contacttype, contact } from './contact-schema'
 export const schemaTypes = [
   company,
   user,
@@ -23,5 +24,7 @@ export const schemaTypes = [
   tag,
   taggable,
   carousel,
-  carouselbannerimage
+  carouselbannerimage,
+  contacttype,
+  contact
 ]

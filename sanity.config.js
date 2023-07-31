@@ -1,13 +1,16 @@
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
-import { schemaTypes } from '@/sanity/schemas/index'
+import { sanityEssentialConfig } from './sanity-config'
+import { schemaTypes } from './sanity/schemas/index'
+
 // import { deskSetting } from './desktopStructure'
 
 const config = defineConfig({
-  projectId: 'hy20vg32',
-  dataset: 'reviewhub',
+  projectId: sanityEssentialConfig.projectId,
+  apiVersion: sanityEssentialConfig.apiVersion,
+  dataset: sanityEssentialConfig.dataset,
+  apiToken: sanityEssentialConfig.apiToken,
   title: 'Review Hub',
-  apiVersion: '2023-07-24',
   basePath: '/admin',
   plugins: [deskTool()],
   useCdn: true,

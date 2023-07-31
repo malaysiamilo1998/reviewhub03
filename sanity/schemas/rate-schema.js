@@ -17,7 +17,7 @@ export const ratekey = {
       name: 'image',
       title: 'Image',
       type: 'image',
-      options: {hotspot: true},
+      options: { hotspot: true },
       fields: [
         {
           name: 'alt',
@@ -25,6 +25,11 @@ export const ratekey = {
           type: 'string'
         }
       ]
+    },
+    {
+      name: 'internalref',
+      title: 'Internal Reference',
+      type: 'string'
     }
   ]
 }
@@ -36,26 +41,27 @@ export const usercompanyrate = {
   fields: [
     {
       name: 'comment',
+      title: 'Comment',
       type: 'string'
     },
     {
       name: 'user',
       title: 'User',
       type: 'reference',
-      to: [{type: 'user'}]
+      to: [{ type: 'user' }]
     },
 
     {
       name: 'company',
       title: 'Company',
       type: 'reference',
-      to: [{type: 'company'}]
+      to: [{ type: 'company' }]
     },
     {
       name: 'ratecriteria',
       title: 'Rate Criteria',
       type: 'reference',
-      to: [{type: 'rateKey'}],
+      to: [{ type: 'rateKey' }],
       options: {
         unique: true
       }
@@ -66,7 +72,24 @@ export const usercompanyrate = {
       type: 'number'
     }
   ],
-  unique: [{fields: ['user', 'company', ' ratecriteria']}]
+  preview: {
+    select: {
+      author: 'user.username',
+      subtitle: 'company.name',
+      subtitle2: 'ratecriteria.criteria',
+      rating: 'rating'
+    },
+    prepare: ({ author, subtitle, subtitle2, rating }) => {
+      // const authors = [author0, author1, author2].filter(Boolean)
+      // const subtitle = authors.length > 0 ? `by ${authors.join(', ')}` : ''
+      // const hasMoreAuthors = Boolean(author3)
+      return {
+        title: `${rating}/${subtitle}/${subtitle2}`,
+        subtitle: `by ${author}`
+      }
+    }
+  },
+  unique: [{ fields: ['user', 'company', ' ratecriteria'] }]
 }
 
 // export const usercompanyratecriteria = {

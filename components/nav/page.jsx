@@ -17,7 +17,7 @@ const Nav = () => {
 
   const setMobileDropDownMenu = () => setToggleDropDown(prev => !prev)
 
-  const isUserLoggedIn = true
+  // const isUserLoggedIn = true
   return (
     <nav className='flex-between mb-16 pt-3 w-full'>
       <Link href='/' className='flex gap-2 flex-center'>

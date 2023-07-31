@@ -4,18 +4,27 @@ export const user = {
   fields: [
     {
       name: 'username',
+      title: 'Username',
+      type: 'string'
+    },
+    {
+      name: 'password',
+      title: 'Password',
       type: 'string'
     },
     {
       name: 'name',
+      title: 'Name',
       type: 'string'
     },
     {
       name: 'email',
+      title: 'Email',
       type: 'string'
     },
     {
       name: 'phone',
+      title: 'Phone',
       type: 'string'
     },
     {
@@ -24,6 +33,11 @@ export const user = {
       options: {
         hotspot: true
       }
+    },
+    {
+      name: 'provider',
+      title: 'Provider',
+      type: 'string'
     }
   ]
 }

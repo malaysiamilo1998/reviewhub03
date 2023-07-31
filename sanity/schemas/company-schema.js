@@ -9,6 +9,12 @@ const company = {
       type: 'string'
     },
     {
+      name: 'contact',
+      title: 'Contact',
+      type: 'array',
+      of: [{ type: 'contact' }]
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
@@ -24,6 +30,17 @@ const company = {
           name: 'alt',
           title: 'Alt',
           type: 'string'
+        }
+      ]
+    },
+    {
+      title: 'Description',
+      name: 'desc',
+      type: 'array',
+      of: [
+        { type: 'block' },
+        {
+          type: 'image'
         }
       ]
     },
@@ -44,6 +61,12 @@ const company = {
       name: 'url',
       title: 'URL',
       type: 'url'
+    },
+    {
+      title: 'Backup URLs',
+      name: 'backupurls',
+      type: 'array',
+      of: [{ type: 'string' }]
     },
     {
       name: 'games',
