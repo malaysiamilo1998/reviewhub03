@@ -23,7 +23,7 @@ const RateHearts = ({ rateCriteria }) => {
       {session?.user ? (
         <>
           {rateCriteria.map(criteria => (
-            <div className='pt-3 '>
+            <div className='pt-3 ' key={criteria._id}>
               <div className='border-solid border-2 rounded-lg w-fit p-3'>
                 <div className='flex justify-between items-center pb-3 col-span-2'>
                   <span className='font-extrabold text-md'>0.0</span>

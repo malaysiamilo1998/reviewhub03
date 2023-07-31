@@ -52,12 +52,12 @@ const CompanyDetails = ({ company }) => {
             <div className=' '>
               {company.contact.map(con => {
                 return (
-                  <>
+                  <div key={company.contact}>
                     <div className='flex justify-start p-3 items-center border-2 rounded-lg m-1'>
                       <Image src={con.channel_logo} width={30} height={30} />
                       <span className='pl-1 text-sm'>{con.value}</span>
                     </div>
-                  </>
+                  </div>
                 )
               })}{' '}
             </div>
