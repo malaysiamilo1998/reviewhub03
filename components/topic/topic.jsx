@@ -69,7 +69,7 @@ const Topic = () => {
           {topic.subtopics ? (
             <div className='grid grid-cols-3 gap-1'>
               {topic.subtopics.map(subtopic => (
-                <SubTopic {...subtopic} />
+                <SubTopic key={subtopic._id} {...subtopic} />
               ))}
             </div>
           ) : (
