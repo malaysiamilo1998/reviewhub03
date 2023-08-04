@@ -26,6 +26,7 @@ const Nav = () => {
           className='object-contain'
           width={30}
           height={30}
+          alt='site logo'
         />
         <p className='logo_text'>Review Hub</p>
       </Link>
