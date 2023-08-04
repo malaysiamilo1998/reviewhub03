@@ -287,7 +287,10 @@ const RegistrerForm = () => {
             <p className='text-center text-transparent text-4xl bg-clip-text bg-gradient-to-r from-red-200  to-red-800 m-5'>
               Register successfully!
             </p>
-            <Link href='/auth/sign-in' className='red_btn rounded-lg p-3 m-3'>
+            <Link
+              href='/api/auth/signin'
+              className='red_btn rounded-lg p-3 m-3'
+            >
               Login
             </Link>
           </div>
