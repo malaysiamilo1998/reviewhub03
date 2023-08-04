@@ -8,6 +8,8 @@ import { VscChromeClose } from 'react-icons/vsc'
 
 import { createComment } from '@/utils/rating-comment'
 
+import QuillEditor from '@/components/editor/quil'
+
 const getRatingCriteria = async () => {
   const rateKeys = await client.fetch(`*[_type=="rateKey"]{
     _id, 
@@ -21,6 +23,7 @@ const getRatingCriteria = async () => {
 const RatingForm = ({ company, value, hideHandler }) => {
   const [rateKeys, setRateKeys] = useState([])
   const { data: session } = useSession()
+  const quillRef = useRef()
   useEffect(() => {
     ;(async () => {
       const rateCriteria = await getRatingCriteria()
@@ -36,6 +39,7 @@ const RatingForm = ({ company, value, hideHandler }) => {
       wd,
       dps,
       comment,
+      // quillRef,
       rateKeys,
       company,
       session
@@ -111,6 +115,7 @@ const RatingForm = ({ company, value, hideHandler }) => {
 
                 <div className='flex justify-end'>
                   <div className=''>
+                    {/* <QuillEditor quillRef={quillRef} /> */}
                     <textarea
                       className='shadow appearance-none border rounded w-full py-2 px-3 my-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                       type='text'
@@ -119,9 +124,6 @@ const RatingForm = ({ company, value, hideHandler }) => {
                         makeTextAreaFocu()
                       }}
                       ref={comment}
-                      // onChange={() => {
-                      //   commentHandler()
-                      // }}
                       placeHolder='Please leave your comment here'
                     >
                       Generally good!

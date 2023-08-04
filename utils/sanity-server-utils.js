@@ -10,3 +10,11 @@ export const checkUserExist = async email => {
      }`)
   return user
 }
+
+export const checkUserExistByUsername = async username => {
+  const user =
+    await sanityServerClient.fetch(`*[_type=="user" && username == '${username}']{
+      _id,
+     }`)
+  return user
+}

@@ -2,6 +2,10 @@ import '@/styles/globals.css'
 import Nav from '@/components/nav/page'
 import Footer from '@/components/footer/footer'
 import Provider from '@/components/provider/provider'
+import {
+  HomePageCommertialLeft,
+  HomePageCommertialRight
+} from '@/components/commercial/commercial-static'
 
 export const metadata = {
   title: 'Review hub',
@@ -18,7 +22,11 @@ export default function RootLayout ({ children }) {
 
           <main className='app'>
             <Nav />
-            {children}
+            <div className='flex justify-between w-full'>
+              {/* <HomePageCommertialLeft /> */}
+              {children}
+              {/* <HomePageCommertialRight /> */}
+            </div>
           </main>
         </Provider>
         <Footer />

@@ -1,7 +1,50 @@
-import { client } from '@/sanity.config'
 import { sanityEssentialConfig } from '@/sanity-config'
 
 import axios from 'axios'
+
+const projectId = sanityEssentialConfig.projectId
+const dataset = sanityEssentialConfig.dataset
+const tokenWithWriteAccess = sanityEssentialConfig.apiToken
+
+export const deleteCommentByUserCompany = async (user, company) => {
+  const mutationsComment = [
+    {
+      delete: {
+        query: `*[_type == 'usercomment' && references('${user}') && references('${company}')]`
+      }
+    }
+  ]
+  const resultDelComment = await axios.post(
+    `https://${projectId}.api.sanity.io/v1/data/mutate/${dataset}?returnIds=true`,
+    { mutations: mutationsComment },
+    {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${tokenWithWriteAccess}`
+      }
+    }
+  )
+
+  const mutations = [
+    {
+      delete: {
+        query: `*[_type == 'userrating' && references('${user}') && references('${company}')]`
+      }
+    }
+  ]
+  const result = await axios.post(
+    `https://${projectId}.api.sanity.io/v1/data/mutate/${dataset}?returnIds=true`,
+    { mutations: mutations },
+    {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${tokenWithWriteAccess}`
+      }
+    }
+  )
+
+  return result
+}
 
 export const createComment = async (
   cs,
@@ -15,6 +58,11 @@ export const createComment = async (
   company,
   session
 ) => {
+  const deleteResult = await deleteCommentByUserCompany(
+    session.user.id,
+    company
+  )
+  console.log(deleteResult)
   const csMeta = rateKeys.filter(rKey => rKey.internalref == 'cs')
   const bnsMeta = rateKeys.filter(rKey => rKey.internalref == 'bns')
   const wthMeta = rateKeys.filter(rKey => rKey.internalref == 'wth')
@@ -22,11 +70,36 @@ export const createComment = async (
   const wdMeta = rateKeys.filter(rKey => rKey.internalref == 'wd')
   const dpsMeta = rateKeys.filter(rKey => rKey.internalref == 'dps')
 
-  const projectId = sanityEssentialConfig.projectId
-  const dataset = sanityEssentialConfig.dataset
-  const tokenWithWriteAccess = sanityEssentialConfig.apiToken
+  const overallrating = parseFloat(
+    (parseFloat(cs.current.value ? cs.current.value : 5) +
+      parseFloat(bns.current.value ? bns.current.value : 5) +
+      parseFloat(wth.current.value ? wth.current.value : 5) +
+      parseFloat(vog.current.value ? vog.current.value : 5) +
+      parseFloat(wd.current.value ? wd.current.value : 5) +
+      parseFloat(dps.current.value ? dps.current.value : 5)) /
+      6
+  )
+
+  console.log('overall rating: ' + overallrating)
 
   const Mutations = [
+    {
+      create: {
+        _type: 'usercomment',
+        user: {
+          _ref: session.user.id,
+          _type: 'reference'
+        },
+        company: {
+          _ref: company,
+          _type: 'reference'
+        },
+        comment: comment.current.value
+          ? comment.current.value
+          : 'Generally good!',
+        overallrating: overallrating
+      }
+    },
     {
       create: {
         _type: 'userrating',
@@ -42,10 +115,8 @@ export const createComment = async (
           _ref: csMeta[0]._id,
           _type: 'reference'
         },
-        comment: comment.current.value
-          ? comment.current.value
-          : 'Generally good!',
-        rating: parseFloat(cs.current.value)
+
+        rating: parseFloat(cs.current.value ? cs.current.value : 5)
       }
     },
     {
@@ -63,10 +134,8 @@ export const createComment = async (
           _ref: bnsMeta[0]._id,
           _type: 'reference'
         },
-        comment: comment.current.value
-          ? comment.current.value
-          : 'Generally good!',
-        rating: parseFloat(bns.current.value)
+
+        rating: parseFloat(bns.current.value ? bns.current.value : 5)
       }
     },
     {
@@ -84,10 +153,8 @@ export const createComment = async (
           _ref: wthMeta[0]._id,
           _type: 'reference'
         },
-        comment: comment.current.value
-          ? comment.current.value
-          : 'Generally good!',
-        rating: parseFloat(wth.current.value)
+
+        rating: parseFloat(wth.current.value ? wth.current.value : 5)
       }
     },
     {
@@ -105,10 +172,8 @@ export const createComment = async (
           _ref: vogMeta[0]._id,
           _type: 'reference'
         },
-        comment: comment.current.value
-          ? comment.current.value
-          : 'Generally good!',
-        rating: parseFloat(vog.current.value)
+
+        rating: parseFloat(vog.current.value ? vog.current.value : 5)
       }
     },
     {
@@ -126,10 +191,8 @@ export const createComment = async (
           _ref: wdMeta[0]._id,
           _type: 'reference'
         },
-        comment: comment.current.value
-          ? comment.current.value
-          : 'Generally good!',
-        rating: parseFloat(wd.current.value)
+
+        rating: parseFloat(wd.current.value ? wd.current.value : 5)
       }
     },
     {
@@ -147,16 +210,11 @@ export const createComment = async (
           _ref: dpsMeta[0]._id,
           _type: 'reference'
         },
-        comment: comment.current.value
-          ? comment.current.value
-          : 'Generally good!',
-        rating: parseFloat(dps.current.value)
+
+        rating: parseFloat(dps.current.value ? dps.current.value : 5)
       }
     }
   ]
-
-  // console.log('mutation')
-  // console.log(Mutations)
 
   await axios.post(
     `https://${projectId}.api.sanity.io/v1/data/mutate/${dataset}?returnIds=true`,

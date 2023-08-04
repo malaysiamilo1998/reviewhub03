@@ -34,16 +34,60 @@ export const ratekey = {
   ]
 }
 
-export const usercompanyrate = {
-  name: 'userrating',
-  title: 'User Rating',
+export const usercomment = {
+  name: 'usercomment',
+  title: 'User Comment',
   type: 'document',
   fields: [
+    {
+      name: 'user',
+      title: 'User',
+      type: 'reference',
+      to: [{ type: 'user' }]
+    },
+    {
+      name: 'company',
+      title: 'Company',
+      type: 'reference',
+      to: [{ type: 'company' }]
+    },
     {
       name: 'comment',
       title: 'Comment',
       type: 'string'
     },
+    {
+      name: 'overallrating',
+      title: 'Overall Rating',
+      type: 'number'
+    }
+  ],
+  preview: {
+    select: {
+      author: 'user.username',
+      subtitle: 'company.name',
+      overallrating: 'overallrating',
+      comment: 'comment'
+    },
+    prepare: ({ author, subtitle, overallrating, comment }) => {
+      return {
+        title: `${author}/${overallrating}/${subtitle}/`,
+        subtitle: `${comment}`
+      }
+    }
+  }
+}
+
+export const usercompanyrate = {
+  name: 'userrating',
+  title: 'User Rating',
+  type: 'document',
+  fields: [
+    // {
+    //   name: 'comment',
+    //   title: 'Comment',
+    //   type: 'string'
+    // },
     {
       name: 'user',
       title: 'User',

@@ -1,5 +1,6 @@
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
+import { visionTool } from '@sanity/vision'
 import { sanityEssentialConfig } from './sanity-config'
 import { schemaTypes } from './sanity/schemas/index'
 
@@ -12,7 +13,7 @@ const config = defineConfig({
   apiToken: sanityEssentialConfig.apiToken,
   title: 'Review Hub',
   basePath: '/admin',
-  plugins: [deskTool()],
+  plugins: [deskTool(), visionTool()],
   useCdn: true,
   schema: { types: schemaTypes }
 })
