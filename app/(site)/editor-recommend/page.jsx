@@ -34,7 +34,7 @@ const Page = () => {
           {adsContent.map(ads => {
             if (ads.place == 'place-2')
               return (
-                <div className='mb-2 relative'>
+                <div key={ads._key} className='mb-2 relative'>
                   <span className='absolute top-0 right-0 text-white'>
                     <RiAdvertisementFill size='30' />
                   </span>
@@ -57,7 +57,7 @@ const Page = () => {
       )}
       {newsSection.map(section => {
         return (
-          <div className=''>
+          <div className='' key={section._id}>
             <p className='orange_gradient text-4xl font-extrabold my-5'>
               {section.title}
             </p>
@@ -69,7 +69,7 @@ const Page = () => {
                   <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2'>
                     {section.medlayout != 'undefined' &&
                       section.medlayout.map(lay => (
-                        <div className='relative'>
+                        <div className='relative' key={lay._key}>
                           {lay.ads ? (
                             <p className='flex items-center absolute top-0 right-0 text-white text-sm bg-black bg-opacity-30 px-1 rounded-sm'>
                               <RiAdvertisementFill /> [sponsor]
@@ -95,6 +95,7 @@ const Page = () => {
                         <div>
                           {section.smlayout1.map(lay => (
                             <div
+                              key={lay._key}
                               className='flex  mb-3 p-3 rounded-lg bg-gray-200 relative'
                               style={{ height: '' }}
                             >
@@ -136,6 +137,7 @@ const Page = () => {
                         <div>
                           {section.smlayout22.map(lay => (
                             <div
+                              key={lay._key}
                               className='flex  mb-3 p-3 rounded-lg bg-gray-200 relative'
                               style={{ height: '' }}
                             >
@@ -177,7 +179,7 @@ const Page = () => {
                       {adsContent.map(ads => {
                         if (ads.place == 'place-3') {
                           return (
-                            <div className='relative'>
+                            <div className='relative' key={ads._key}>
                               <span className='absolute text-white top-0 right-0'>
                                 <RiAdvertisementFill size='35' />
                               </span>
@@ -233,6 +235,7 @@ const Page = () => {
                                 {section.smlayout1.map(lay => {
                                   return (
                                     <div
+                                      key={lay._key}
                                       className='flex  mb-3 p-3 rounded-lg bg-gray-200 relative'
                                       style={{ height: '118px' }}
                                     >
@@ -286,6 +289,7 @@ const Page = () => {
                                     {section.smlayout2.map(lay => {
                                       return (
                                         <div
+                                          key={lay._key}
                                           className='flex  mb-3 p-3 rounded-lg bg-gray-200 relative'
                                           style={{ height: '118px' }}
                                         >
@@ -328,7 +332,10 @@ const Page = () => {
                                   {adsContent.map(ads => {
                                     if (ads.place == 'place-2')
                                       return (
-                                        <div className='mb-2 relative'>
+                                        <div
+                                          className='mb-2 relative'
+                                          key={ads._key}
+                                        >
                                           <span className='absolute top-0 right-0 text-white'>
                                             <RiAdvertisementFill size='30' />
                                           </span>
@@ -367,7 +374,7 @@ const Page = () => {
                       {adsContent.map(ads => {
                         if (ads.place == 'place-3') {
                           return (
-                            <div className='relative'>
+                            <div className='relative' key={ads._key}>
                               <span className='absolute text-white top-0 right-0'>
                                 <RiAdvertisementFill size='35' />
                               </span>
