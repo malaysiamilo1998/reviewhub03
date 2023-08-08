@@ -7,6 +7,8 @@ export const checkUserExist = async email => {
   const user =
     await sanityServerClient.fetch(`*[_type=="user" && email == '${email}']{
       _id,
+      "avatar": avatar.asset->url, 
+      "default_avatar": rank->image.asset->url, 
      }`)
   return user
 }

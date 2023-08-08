@@ -2,6 +2,7 @@
 // import { useState, useEffect } from 'react'
 import { AllCompanies } from '@/components/companies/companies'
 import Topic from '@/components/topic/topic'
+import { useParams } from 'next/navigation'
 
 export default function DiscussionLayout ({ children }) {
   return (

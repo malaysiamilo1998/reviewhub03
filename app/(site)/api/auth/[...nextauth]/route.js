@@ -61,9 +61,11 @@ const handler = NextAuth({
   callbacks: {
     async session ({ session }) {
       const sanityUser = await checkUserExist(session.user.email)
-      console.log('session callback called!')
+      console.log('session callback called!' + session.user)
       // const sessionUser = await User.findOne({ email: session.user.email })
       session.user.id = sanityUser[0]._id.toString()
+      session.user.avatar = sanityUser[0].avatar
+      session.user.default_avatar = sanityUser[0].default_avatar
       return session
     },
     async signIn ({ account, profile }) {

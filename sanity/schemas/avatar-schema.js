@@ -1,6 +1,6 @@
 export const avatar = {
   name: 'avatar',
-  title: 'Default Avatar',
+  title: 'Rank',
   type: 'document',
   fields: [
     {
@@ -12,7 +12,7 @@ export const avatar = {
       name: 'image',
       title: 'Image',
       type: 'image',
-      options: {hotspot: true},
+      options: { hotspot: true },
       fields: [
         {
           name: 'alt',

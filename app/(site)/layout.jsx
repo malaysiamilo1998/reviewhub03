@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import Nav from '@/components/nav/page'
 import Footer from '@/components/footer/footer'
 import Provider from '@/components/provider/provider'
+
 import {
   HomePageCommertialLeft,
   HomePageCommertialRight

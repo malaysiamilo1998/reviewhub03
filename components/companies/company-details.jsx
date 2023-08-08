@@ -7,6 +7,17 @@ import MinimizeRating from '@/components/rating/minimize_rating'
 import { Box } from '@mui/material'
 import { useNextSanityImage } from 'next-sanity-image'
 import config from '@/sanity.config'
+import { companyComments, companyCommentsDetails } from '@/utils/rating-comment'
+// import { Tag } from 'primereact/tag'
+// import { PrimeReactProvider, PrimeReactContext } from 'primereact/api'
+import 'primereact/resources/themes/lara-light-indigo/theme.css'
+import 'primereact/resources/primereact.min.css'
+import { Carousel } from 'primereact/carousel'
+import {
+  ProductTemplate,
+  ProductTemplateDetails
+} from '@/components/comments/vertical-prouduct-template'
+import { useState, useEffect } from 'react'
 
 const myPortableTextComponents = {
   types: {
@@ -32,7 +43,35 @@ const SanityImage = ({ asset }) => {
 }
 
 const CompanyDetails = ({ company }) => {
-  console.log(company)
+  const [comments, setComments] = useState([])
+  const [detailComments, setDetailComments] = useState([])
+  console.log('#==>' + company._id)
+  useEffect(() => {
+    console.log('===>' + company._id)
+    ;(async () => {
+      console.log('====>' + company._id)
+      const [comments, commentDetails] = await companyComments(company._id)
+      setComments(comments)
+      setDetailComments(commentDetails)
+    })()
+  }, [company])
+  const responsiveOptions = [
+    {
+      breakpoint: '1199px',
+      numVisible: 1,
+      numScroll: 1
+    },
+    {
+      breakpoint: '991px',
+      numVisible: 2,
+      numScroll: 1
+    },
+    {
+      breakpoint: '767px',
+      numVisible: 1,
+      numScroll: 1
+    }
+  ]
   return (
     <>
       <div className='flex justify-start relative'>
@@ -67,7 +106,7 @@ const CompanyDetails = ({ company }) => {
           )}
         </div>
         <div className='hidden sm:flex'>
-          <MinimizeRating overall={{ mark: 4.5 }} company={company._id} />
+          <MinimizeRating company={company._id} />
         </div>
 
         {company.backupurls ? (
@@ -91,13 +130,46 @@ const CompanyDetails = ({ company }) => {
         ) : (
           <></>
         )}
+        {/* {comments !== undefined ? (
+          <div className=''>
+            <Carousel
+              autoplayInterval={2000}
+              value={comments}
+              numVisible={1}
+              numScroll={1}
+              orientation='vertical'
+              verticalViewPortHeight='150px'
+              itemTemplate={ProductTemplate}
+            />
+          </div>
+        ) : (
+          <></>
+        )} */}
       </div>
+
       <div className='p-5 shawdow-lg border-2 rounded-3xl'>
         <PortableText
           value={company.desc}
           components={myPortableTextComponents}
         />
       </div>
+
+      {detailComments !== undefined ? (
+        <div className='grid lg:grid-cols-2 grid-cols-1'>
+          <Carousel
+            autoplayInterval={2000}
+            value={detailComments}
+            numVisible={5}
+            numScroll={5}
+            orientation='vertical'
+            verticalViewPortHeight='auto'
+            itemTemplate={ProductTemplateDetails}
+          />
+          <div className=''></div>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   )
 }

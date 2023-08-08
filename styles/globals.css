@@ -176,3 +176,6 @@
 .flex-between {
   @apply flex justify-between items-center;
 }
+.ql-container {
+  @apply h-72;
+}

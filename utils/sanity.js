@@ -11,20 +11,12 @@ export function urlFor (source) {
   return builder.image(source)
 }
 
-export const deleteCommentByUserCompany = async (user, company) => {
-  const mutations = [
-    {
-      mutations: [
-        {
-          delete: {
-            query: `*[_type == 'usercomment' && references(${user})]`
-          }
-        }
-      ]
-    }
-  ]
-
-  return result
-}
+// export const checkRating = async username => {
+//   const user =
+//     await client.fetch(`*[_type=="usercompanyrate" && username == '${username}']{
+//       _id,
+//      }`)
+//   return user
+// }
 
 export const insertNewUserFromProvider = () => {}

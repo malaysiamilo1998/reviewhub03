@@ -9,7 +9,17 @@ import companyGame from './company-game'
 import { carousel } from './carousel-banner'
 import { carouselbannerimage } from './carousel-images'
 import { contacttype, contact } from './contact-schema'
+import { ads } from './ads-schema'
+import {
+  newssection,
+  news,
+  newssectioncategory
+} from './editor-recomment-schema'
 export const schemaTypes = [
+  newssection,
+  ads,
+  news,
+  newssectioncategory,
   company,
   user,
   avatar,

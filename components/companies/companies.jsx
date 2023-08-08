@@ -37,7 +37,7 @@ export const AllCompanies = () => {
         }
         return (
           <div key={company._id} className='flex-start'>
-            <Link href={`sponsor\\${company.slug}`}>
+            <Link href={`\\sponsor\\${company.slug}`}>
               <Image
                 className=''
                 src={urlFor(company.image)

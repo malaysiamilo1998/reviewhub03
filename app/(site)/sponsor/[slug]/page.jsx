@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 //Move to component folder
 import { useSession } from 'next-auth/react'
 import { client, urlFor } from '@/utils/sanity'
+import { calOverAllRating } from '@/utils/rating-comment'
 
 const getOneSponsor = async slug => {
   const sponsor =
@@ -53,23 +54,23 @@ const getRatingCriteria = async () => {
 const SponsorPage = ({ params }) => {
   const slug = params.slug
   const [sponsor, setSponsor] = useState({})
-  const [rateCriteria, setRateCriteria] = useState([])
-  const { data: session } = useSession()
+  // const [rateCriteria, setRateCriteria] = useState([])
+  // const { data: session } = useSession()
   useEffect(() => {
     ;(async () => {
       const sponsorData = await getOneSponsor(slug)
-      console.log(sponsorData)
       setSponsor(sponsorData)
     })()
   }, [])
 
-  useEffect(() => {
-    ;(async () => {
-      const rateCriteriaData = await getRatingCriteria()
-      // console.log(sponsorData)
-      setRateCriteria(rateCriteriaData)
-    })()
-  }, [])
+  // useEffect(() => {
+  //   ;(async () => {
+  //     const rateCriteriaData = await getRatingCriteria()
+  //     // console.log(sponsorData)
+  //     setRateCriteria(rateCriteriaData)
+  //   })()
+  // }, [])
+
   return (
     <div className='w-full'>
       {sponsor[0] && sponsor[0].banner ? (
@@ -77,7 +78,7 @@ const SponsorPage = ({ params }) => {
           className='rounded-lg'
           // className='w-full'
           src={sponsor[0].banner}
-          alt={sponsor.bannerAlt}
+          alt={sponsor[0].bannerAlt}
         />
       ) : (
         <></>
@@ -89,7 +90,11 @@ const SponsorPage = ({ params }) => {
           {sponsor[0] && sponsor[0].games ? (
             sponsor[0].games.map(game => {
               return (
-                <div key={game.gamename} className='flex justify-between'>
+                <div
+                  key={game.gamename}
+                  // data-game-name={game.gamename}
+                  className='flex justify-between'
+                >
                   <Image
                     src={urlFor(game.image)
                       .width(150)

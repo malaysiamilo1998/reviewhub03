@@ -13,7 +13,8 @@ const StyledRating = styled(Rating)({
   }
 })
 
-export const RateFormHeart = ({ label, handler }) => {
+export const RateFormHeart = ({ label, handler, heartCount }) => {
+  console.log('heart count=>' + heartCount.rating)
   return (
     <div className='flex justify-between px-5 py-2 mb-3 border-2 shadow-2xl'>
       <div className='text-sm font-extrabold'>{label}</div>
@@ -22,7 +23,7 @@ export const RateFormHeart = ({ label, handler }) => {
         <StyledRating
           className='flex justify-between'
           name='customized-color'
-          defaultValue={2}
+          defaultValue={heartCount.rating}
           precision={0.5}
           size='small'
           onChange={(event, val) => {
