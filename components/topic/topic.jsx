@@ -27,7 +27,7 @@ const Topic = () => {
   }, [])
   // const topics = await getTopics();
   return (
-    <div className='mr-1 border-2 border-inherit rounded-lg flex-1'>
+    <div className='mr-1 border-2 border-inherit rounded-lg'>
       <div className='flex justify-start items-center'>
         <span className='p-2 text-lg font-medium'>Topics</span>
         <FaCommentsDollar />

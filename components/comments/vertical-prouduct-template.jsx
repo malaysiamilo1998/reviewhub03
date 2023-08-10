@@ -16,6 +16,7 @@ const StyledRating = styled(Rating)({
 
 export const ProductTemplateDetails = item => (
   <div
+    key={item._key}
     className='
     w-full
     h-full
@@ -65,7 +66,10 @@ export const ProductTemplateDetails = item => (
       <div className='mx-5'>
         {item.details != undefined ? (
           item.details.map(rate => (
-            <div className='grid grid-cols-2 border-b-2 rounded-lg my-2'>
+            <div
+              key={rate._id}
+              className='grid grid-cols-2 border-b-2 rounded-lg my-2'
+            >
               <div className='text-sm mx-3'>{rate.rate_type}</div>
               <div className='flex items-center'>
                 <StyledRating
@@ -89,7 +93,10 @@ export const ProductTemplateDetails = item => (
 )
 
 export const ProductTemplate = item => (
-  <div className='w-full h-full border-2 flex justify-center items-center rounded-lg px-1'>
+  <div
+    key={item._key}
+    className='w-full h-full border-2 flex justify-center items-center rounded-lg px-1'
+  >
     <div>
       <StyledRating
         name='customized-color'

@@ -78,13 +78,16 @@ const SponsorPage = ({ params }) => {
           className='rounded-lg'
           // className='w-full'
           src={sponsor[0].banner}
-          alt={sponsor[0].bannerAlt}
+          alt={`${sponsor[0].bannerAlt} --- `}
         />
       ) : (
         <></>
       )}
 
-      <div className='shadow-2xl rounded-lg mt-10 p-3'>
+      <div className='shadow-2xl rounded-lg mt-10 p-3 bg-gray-200 flex items-center justify-center '>
+        <span>Ads</span>
+      </div>
+      <div className='shadow-2xl rounded-lg mt-10 p-3 hidden'>
         <h2 className='text-lg font-bold'>Asorted game:</h2>
         <div className='grid lg:grid-cols-6 md:grid-cols-4 grid-cols-2 gap-3'>
           {sponsor[0] && sponsor[0].games ? (

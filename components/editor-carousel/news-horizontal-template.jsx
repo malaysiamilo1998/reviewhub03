@@ -5,7 +5,7 @@ import { urlFor } from '@/utils/sanity'
 
 export const NewsHorizontalTemplate = item => {
   return (
-    <div className='flex justify-start items-center relative '>
+    <div className='flex justify-start items-center relative ' key={item._key}>
       {item.ads == true ? (
         <div className='absolute top-0 right-0 z-10  bg-opacity-40 bg-pink-500 p-2 text-white font-extrabold'>
           [sponsor]
@@ -44,7 +44,7 @@ export const NewsHorizontalTemplate = item => {
 
 export const NewsVerticalTemplate = item => {
   return (
-    <div>
+    <div key={item._key}>
       <div>
         <div className='relative'>
           <Image
