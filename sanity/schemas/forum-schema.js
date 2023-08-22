@@ -22,7 +22,7 @@ export const topic = {
       name: 'image',
       title: 'Image',
       type: 'image',
-      options: {hotspot: true},
+      options: { hotspot: true },
       fields: [
         {
           name: 'alt',
@@ -39,7 +39,7 @@ export const topic = {
     {
       name: 'parentTopic',
       type: 'reference',
-      to: [{type: 'topic'}]
+      to: [{ type: 'topic' }]
     },
     {
       name: 'createdAt',
@@ -52,7 +52,7 @@ export const topic = {
     {
       name: 'tags',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'taggable'}]}]
+      of: [{ type: 'reference', to: [{ type: 'taggable' }] }]
     }
   ],
   orderings: [
@@ -60,8 +60,8 @@ export const topic = {
       title: 'Preference Sorting',
       name: 'Preference',
       by: [
-        {field: 'preference', direction: 'asc'},
-        {field: 'preference', direction: 'desc'}
+        { field: 'preference', direction: 'asc' },
+        { field: 'preference', direction: 'desc' }
       ]
     }
     // Add more ordering options as needed
@@ -85,14 +85,19 @@ export const thread = {
       }
     },
     {
+      name: 'author',
+      type: 'reference',
+      to: [{ type: 'user' }]
+    },
+    {
       name: 'topic',
       type: 'reference',
-      to: [{type: 'topic'}]
+      to: [{ type: 'topic' }]
     },
     {
       name: 'posts',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'post'}]}]
+      of: [{ type: 'reference', to: [{ type: 'post' }] }]
     },
     {
       name: 'viewCount',
@@ -110,7 +115,7 @@ export const thread = {
     {
       name: 'tags',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'taggable'}]}]
+      of: [{ type: 'reference', to: [{ type: 'taggable' }] }]
     }
   ]
 }
@@ -121,12 +126,12 @@ export const post = {
     {
       name: 'author',
       type: 'reference',
-      to: [{type: 'user'}]
+      to: [{ type: 'user' }]
     },
     {
       name: 'thread',
       type: 'reference',
-      to: [{type: 'thread'}]
+      to: [{ type: 'thread' }]
     },
     {
       name: 'likes',
@@ -140,7 +145,7 @@ export const post = {
     {
       name: 'tags',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'taggable'}]}]
+      of: [{ type: 'reference', to: [{ type: 'taggable' }] }]
     },
     {
       name: 'isFirstPost',

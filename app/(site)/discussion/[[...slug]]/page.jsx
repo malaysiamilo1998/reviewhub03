@@ -6,18 +6,26 @@ import Button from '@mui/material/Button'
 import 'react-quill/dist/quill.snow.css'
 import { useForm, useController } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
-// import ReactLoading from 'react-loading'
+import ReactLoading from 'react-loading'
 // import ImageUploading from 'react-images-uploading'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import StickyTopic from '@/components/topic/sticky-topic'
 import ErrorMsg from '@/components/error/error-message'
+import Threads from '@/components/topic/threads'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 import { getSingleTopicRef, getTopicsToplevelLight } from '@/utils/create-post'
 
 const TopicAggregator = () => {
+  const [showCreateLoading, setShowCreateLoading] = useState()
   const [content, setContent] = useState()
   const [currentTopicRef, setCurrentTopicRef] = useState([])
   const params = useParams()
+  const { data: session } = useSession()
+
+  // console.log('path')
+  // console.log(params.slug)
 
   useEffect(() => {
     ;(async () => {
@@ -75,6 +83,7 @@ const TopicAggregator = () => {
   const contentRef = useRef()
 
   const createNewPostSubmit = (data, event) => {
+    setShowCreateLoading(true)
     const newContent = contentRef.current.getEditor().getText()
     setContent(newContent)
     event.preventDefault()
@@ -163,7 +172,7 @@ const TopicAggregator = () => {
                   required: 'Content is compulsory',
                   pattern: {
                     value:
-                      /^[a-zA-Z0-9$()%.,;:!?()\[\]{}\u4e00-\u9fa5\u3040-\u309F\u30A0-\u30FF]+$/i,
+                      /^[a-zA-Z0-9$()%.,;:!?()\[\]{}\u4e00-\u9fa5\u3040-\u309F\u30A0-\u30FF \t]+$/i,
                     message:
                       'Invalid content, only A-Z, a-z, 0-9, and punctuations white space are acceptable'
                   }
@@ -175,13 +184,18 @@ const TopicAggregator = () => {
                 render={({ message }) => <ErrorMsg msg={message} />}
               />
             </div>
-            <div>
+            <div className='flex justify-start items-center'>
               <button
                 type='submit'
-                className='outline outline-offset-2 outline-1  px-2 py-1 mx-1 rounded-lg hover:bg-rose-100 text-sm '
+                className='gap-3 outline outline-offset-2 outline-1  px-2 py-1 mx-1 rounded-lg hover:bg-rose-100 text-sm '
               >
                 Create
               </button>
+              {showCreateLoading ? (
+                <ReactLoading type='cubes' color='black' className='' />
+              ) : (
+                <></>
+              )}
             </div>
           </form>
         </div>
@@ -191,20 +205,24 @@ const TopicAggregator = () => {
       {/* <div className='flex flex-col justify-between w-full'> */}
       <div className='w-full'>
         <div className='flex justify-end my-3'>
-          <Button
-            variant='outlined'
-            size='small'
-            color='success'
-            onClick={() => {
-              setShowCreatePostForm(true)
-            }}
-          >
-            create post
-          </Button>
+          {session?.user ? (
+            <Button
+              variant='outlined'
+              size='small'
+              color='success'
+              onClick={() => {
+                setShowCreatePostForm(true)
+              }}
+            >
+              create post
+            </Button>
+          ) : (
+            <Link href='api/auth/signin'> Login to post</Link>
+          )}
         </div>
         <StickyTopic currentLevelTopics={currentTopicRef} />
         <div className='bg-gradient-to-r text-2xl from-orange-400 via-red-500 to-purple-600 bg-clip-text text-transparent'>
-          Threads
+          <Threads routeUri={params.slug} />
         </div>
         {/* <form>
           <div className='pb-12'>
