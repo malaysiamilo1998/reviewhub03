@@ -12,12 +12,16 @@ const client = createClient(sanityEssentialConfig)
 export const createPost = (slug, handlerRef) => {}
 
 export const getThreads = async slugString => {
-  const threads = await client.fetch(
-    `*[_type=="thread" && topic._ref in *[_type=="topic" && slug.current=="${slugString}"]._id]{_id,title,  "author_id": author->_id, "author": author->name, "author_avatar": author->avatar, _createdAt}`
-  )
-
-  // console.log('threads')
-  // console.log(threads)
+  let threads
+  if (slugString == '') {
+    threads = await client.fetch(
+      `*[_type=="thread"] | order(_createdAt desc){_id,title,  "author_id": author->_id, "author": author->name, "author_avatar": author->avatar, _createdAt}`
+    )
+  } else {
+    threads = await client.fetch(
+      `*[_type=="thread" && topic._ref in *[_type=="topic" && slug.current=="${slugString}"]._id] | order(_createdAt desc){_id,title,  "author_id": author->_id, "author": author->name, "author_avatar": author->avatar, _createdAt}`
+    )
+  }
 
   return threads
 }
