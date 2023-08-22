@@ -1,8 +1,7 @@
 'use client'
-import { createPost } from '@/utils/create-post'
 import { useParams } from 'next/navigation'
 import { useState, useRef, useEffect } from 'react'
-import ReactQuill from 'react-quill'
+// import ReactQuill from 'react-quill'
 import Button from '@mui/material/Button'
 import 'react-quill/dist/quill.snow.css'
 import { useForm, useController } from 'react-hook-form'
@@ -10,31 +9,48 @@ import { ErrorMessage } from '@hookform/error-message'
 import ReactLoading from 'react-loading'
 import ImageUploading from 'react-images-uploading'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
+import StickyTopic from '@/components/topic/sticky-topic'
 
-import { getSingleTopicRef } from '@/utils/create-post'
+import { getSingleTopicRef, getTopicsToplevelLight } from '@/utils/create-post'
 
 const TopicAggregator = () => {
   const [content, setContent] = useState()
-  const [currentTopicRef, setCurrentTopicRef] = useState()
+  const [currentTopicRef, setCurrentTopicRef] = useState([])
   const params = useParams()
 
-  // useEffect(() => {
-  //   ;(async () => {
-  //     if (params.slug != undefined && params.slug.length > 0) {
-  //       const slug = params.slug[params.slug.length - 1]
-  //       console.log('current slug=>' + slug)
-  //       const currentTopicRef = await getSingleTopicRef(slug)
-  //       const ref =
-  //         currentTopicRef[0] == undefined
-  //           ? null
-  //           : "'" + currentTopicRef[0]._id + "'"
-  //       const singleLevelTopics = await getSigleLevelTopics(ref)
-  //       if (singleLevelTopics[0] !== undefined) {
-  //         setCurrentTopicRef(singleLevelTopics)
-  //       }
-  //     }
-  //   })()
-  // }, [])
+  useEffect(() => {
+    ;(async () => {
+      if (params.slug != undefined && params.slug.length > 0) {
+        const slug = params.slug[params.slug.length - 1]
+
+        const currentTopicRef = await getSingleTopicRef(slug)
+        if (currentTopicRef.length < 1) {
+          /// go to page 404
+        }
+        const ref =
+          currentTopicRef.length > 0 ? "'" + currentTopicRef[0]._id + "'" : null
+
+        //
+        const singleLevelTopics = await getTopicsToplevelLight(slug)
+
+        console.log('current slug=>=><<<' + ref)
+        console.log(singleLevelTopics)
+
+        if (singleLevelTopics.length > 0) {
+          console.log('rerun! Page')
+          console.log(singleLevelTopics)
+          setCurrentTopicRef(singleLevelTopics)
+        }
+      } else {
+        const singleLevelTopics = await getTopicsToplevelLight('')
+        console.log('gettopiclight')
+        console.log(singleLevelTopics)
+        if (singleLevelTopics !== undefined) {
+          setCurrentTopicRef(singleLevelTopics)
+        }
+      }
+    })()
+  }, [])
 
   const {
     register,
@@ -73,7 +89,7 @@ const TopicAggregator = () => {
     <div className='h-full w-full'>
       {showCreatePostForm ? (
         // <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-rose-100 via-rose-200 to-rose-200 p-5 rounded-lg'>
-        <div className='z-10 lg:w-2/3 xl:w-4/5 w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg m-5 p-5'>
+        <div className='z-10 lg:w-2/3 xl:w-4/5 w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg m-5 p-5 shadow-2xl'>
           <div className='flex justify-end items-center m-3 '>
             <button
               className='p-1 flex justify-end items-center rounded-lg border-2'
@@ -86,19 +102,45 @@ const TopicAggregator = () => {
           </div>
           <form onSubmit={handleSubmit(createNewPostSubmit)}>
             <div className='flex justify-start items-center mb-3'>
-              <label htmlFor='subject'>Subject</label>
-              <input
-                id='subject'
-                className='w-full border-2 rounded-lg mx-3 p-2'
-                {...register('subject', {
-                  required: 'Subject is compulsory',
-                  pattern: {
-                    value: /^[a-zA-Z0-9\s\p{P}]+$/i,
-                    message:
-                      'Invalid subject, only A-Z, a-z, 0-9, and punctuations white space are acceptable'
-                  }
-                })}
-              />
+              <select>
+                <option selected>Select a topic</option>
+                {currentTopicRef.length > 0 ? (
+                  <>
+                    {currentTopicRef.map(topic => (
+                      <option key={topic._id} value={topic._id}>
+                        {topic.title}
+                      </option>
+                    ))}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </select>
+            </div>
+            <div className='flex justify-start items-center mb-3'>
+              {/* <label htmlFor='subject'>Subject</label> */}
+              <div className='w-full'>
+                <input
+                  placeholder='Subject'
+                  id='subject'
+                  className='w-full border-2 rounded-lg p-2'
+                  {...register('subject', {
+                    required: 'Subject is compulsory',
+                    pattern: {
+                      value: /^[a-zA-Z0-9\s\p{P}]+$/i,
+                      message:
+                        'Invalid subject, only A-Z, a-z, 0-9, and punctuations white space are acceptable'
+                    }
+                  })}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name='subject'
+                  render={({ message }) => (
+                    <p className='text-red-700'>{message}</p>
+                  )}
+                />
+              </div>
             </div>
 
             <div className=''>
@@ -110,16 +152,25 @@ const TopicAggregator = () => {
                 onChange={() => {}}
               /> */}
               <textarea
-                className='w-full h-72 border-2'
+                placeholder='Content'
+                className='w-full h-72 border-2 p-2'
                 {...register('content', {
                   required: 'Content is compulsory',
                   pattern: {
-                    value: /^[a-zA-Z0-9\s\p{P}]+$/i,
+                    value:
+                      /^[a-zA-Z0-9$()%.,;:!?()\[\]{}\u4e00-\u9fa5\u3040-\u309F\u30A0-\u30FF]+$/i,
                     message:
                       'Invalid content, only A-Z, a-z, 0-9, and punctuations white space are acceptable'
                   }
                 })}
               ></textarea>
+              <ErrorMessage
+                errors={errors}
+                name='content'
+                render={({ message }) => (
+                  <p className='text-red-700'>{message}</p>
+                )}
+              />
             </div>
             <div>
               <button
@@ -212,6 +263,7 @@ const TopicAggregator = () => {
             create post
           </Button>
         </div>
+        <StickyTopic currentLevelTopics={currentTopicRef} />
         <div className='bg-gradient-to-r text-2xl from-orange-400 via-red-500 to-purple-600 bg-clip-text text-transparent'>
           Threads
         </div>

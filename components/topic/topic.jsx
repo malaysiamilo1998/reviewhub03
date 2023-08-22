@@ -38,12 +38,16 @@ const Topic = () => {
           <div className='hover:font-medium p-2 flex justify-start  border-t-2 border-solid'>
             <Image
               className=''
-              src={urlFor(topic.image)
-                .width(80)
-                .height(80)
-                .fit('crop')
-                .crop('entropy')
-                .url()}
+              src={
+                topic.image
+                  ? urlFor(topic.image)
+                      .width(80)
+                      .height(80)
+                      .fit('crop')
+                      .crop('entropy')
+                      .url()
+                  : '/assets/images/topic-default'
+              }
               alt={topic.imgAlt}
               width={20}
               height={20}
