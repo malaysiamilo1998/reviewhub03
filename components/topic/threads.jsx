@@ -5,6 +5,10 @@ import { urlFor } from '@/utils/sanity'
 import Link from 'next/link'
 import { FaClipboardUser } from 'react-icons/fa6'
 import { MdDateRange } from 'react-icons/md'
+import config from '@/sanity.config'
+import { PortableText } from '@portabletext/react'
+import { useNextSanityImage } from 'next-sanity-image'
+
 const Threads = ({ routeUri }) => {
   console.log('route url')
   console.log(routeUri)
@@ -32,7 +36,7 @@ const Threads = ({ routeUri }) => {
                 className='flex justify-start gap-3 text-black shadow-sm bg-slate-50 w-full'
                 key={thread._id}
               >
-                <div>
+                <div className='m-3'>
                   <Image
                     src={
                       thread.author_avatar
@@ -47,8 +51,9 @@ const Threads = ({ routeUri }) => {
                     alt="member's avatar"
                   />
                 </div>
-                <div className='text-base flex flex-col gap-3'>
-                  <div>{thread.title}</div>
+                <div className=' flex flex-col gap-3'>
+                  <div className='text-md'>{thread.title}</div>
+                  <div className='text-base'>{thread.desc}</div>
                   <hr />
                   <div className='flex justify-start items-center'>
                     <Link

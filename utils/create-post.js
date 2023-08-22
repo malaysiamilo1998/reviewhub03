@@ -15,11 +15,11 @@ export const getThreads = async slugString => {
   let threads
   if (slugString == '') {
     threads = await client.fetch(
-      `*[_type=="thread"] | order(_createdAt desc){_id,title,  "author_id": author->_id, "author": author->name, "author_avatar": author->avatar, _createdAt}`
+      `*[_type=="thread"] | order(_createdAt desc){_id,title,  "author_id": author->_id, "author": author->name, "author_avatar": author->avatar, _createdAt, desc, content }`
     )
   } else {
     threads = await client.fetch(
-      `*[_type=="thread" && topic._ref in *[_type=="topic" && slug.current=="${slugString}"]._id] | order(_createdAt desc){_id,title,  "author_id": author->_id, "author": author->name, "author_avatar": author->avatar, _createdAt}`
+      `*[_type=="thread" && topic._ref in *[_type=="topic" && slug.current=="${slugString}"]._id] | order(_createdAt desc){_id,title,  "author_id": author->_id, "author": author->name, "author_avatar": author->avatar, _createdAt, desc, content}`
     )
   }
 

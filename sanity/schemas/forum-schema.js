@@ -95,9 +95,20 @@ export const thread = {
       to: [{ type: 'topic' }]
     },
     {
-      name: 'posts',
+      title: 'Description',
+      name: 'desc',
+      type: 'string'
+    },
+    {
+      title: 'Content',
+      name: 'content',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'post' }] }]
+      of: [
+        { type: 'block' },
+        {
+          type: 'image'
+        }
+      ]
     },
     {
       name: 'viewCount',
@@ -147,12 +158,7 @@ export const post = {
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'taggable' }] }]
     },
-    {
-      name: 'isFirstPost',
-      type: 'boolean',
-      description: 'Check if the post is first post (Thread Content)',
-      title: 'Is First?'
-    },
+
     {
       name: 'content',
       title: 'Content',
