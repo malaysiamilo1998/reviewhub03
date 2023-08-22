@@ -6,10 +6,11 @@ import Button from '@mui/material/Button'
 import 'react-quill/dist/quill.snow.css'
 import { useForm, useController } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
-import ReactLoading from 'react-loading'
-import ImageUploading from 'react-images-uploading'
+// import ReactLoading from 'react-loading'
+// import ImageUploading from 'react-images-uploading'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import StickyTopic from '@/components/topic/sticky-topic'
+import ErrorMsg from '@/components/error/error-message'
 
 import { getSingleTopicRef, getTopicsToplevelLight } from '@/utils/create-post'
 
@@ -102,20 +103,33 @@ const TopicAggregator = () => {
           </div>
           <form onSubmit={handleSubmit(createNewPostSubmit)}>
             <div className='flex justify-start items-center mb-3'>
-              <select>
-                <option selected>Select a topic</option>
-                {currentTopicRef.length > 0 ? (
-                  <>
-                    {currentTopicRef.map(topic => (
-                      <option key={topic._id} value={topic._id}>
-                        {topic.title}
-                      </option>
-                    ))}
-                  </>
-                ) : (
-                  <></>
-                )}
-              </select>
+              <div>
+                <select
+                  {...register('topicRef', {
+                    required: 'Please select a Topic'
+                  })}
+                >
+                  <option selected value=''>
+                    Select a topic
+                  </option>
+                  {currentTopicRef.length > 0 ? (
+                    <>
+                      {currentTopicRef.map(topic => (
+                        <option key={topic._id} value={topic._id}>
+                          {topic.title}
+                        </option>
+                      ))}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </select>
+                <ErrorMessage
+                  errors={errors}
+                  name='topicRef'
+                  render={({ message }) => <ErrorMsg msg={message} />}
+                />
+              </div>
             </div>
             <div className='flex justify-start items-center mb-3'>
               {/* <label htmlFor='subject'>Subject</label> */}
@@ -136,21 +150,12 @@ const TopicAggregator = () => {
                 <ErrorMessage
                   errors={errors}
                   name='subject'
-                  render={({ message }) => (
-                    <p className='text-red-700'>{message}</p>
-                  )}
+                  render={({ message }) => <ErrorMsg msg={message} />}
                 />
               </div>
             </div>
 
             <div className=''>
-              {/* <ReactQuill
-                theme='snow'
-                value={content}
-                className='h-72 box-border '
-                ref={contentRef}
-                onChange={() => {}}
-              /> */}
               <textarea
                 placeholder='Content'
                 className='w-full h-72 border-2 p-2'
@@ -167,9 +172,7 @@ const TopicAggregator = () => {
               <ErrorMessage
                 errors={errors}
                 name='content'
-                render={({ message }) => (
-                  <p className='text-red-700'>{message}</p>
-                )}
+                render={({ message }) => <ErrorMsg msg={message} />}
               />
             </div>
             <div>
@@ -179,70 +182,6 @@ const TopicAggregator = () => {
               >
                 Create
               </button>
-            </div>
-            <div>
-              <ImageUploading
-                multiple
-                value={images}
-                onChange={onChange}
-                maxNumber={maxNumber}
-                dataURLKey='data_url'
-              >
-                {({
-                  imageList,
-                  onImageUpload,
-                  onImageRemoveAll,
-                  onImageUpdate,
-                  onImageRemove,
-                  isDragging,
-                  dragProps
-                }) => (
-                  // write your building UI
-                  <div>
-                    <button
-                      className='p-10 border-2 rounded-lg m-5'
-                      style={isDragging ? { color: 'red' } : undefined}
-                      onClick={onImageUpload}
-                      {...dragProps}
-                    >
-                      Click or Drop here
-                    </button>
-                    &nbsp;
-                    <button
-                      onClick={onImageRemoveAll}
-                      className='p-10 border-2 rounded-lg m-5'
-                    >
-                      Remove all images
-                    </button>
-                    <div className='flex-col justify-start items-center gap-1  '>
-                      {imageList.map((image, index) => (
-                        <div key={index} className='image-item'>
-                          <img
-                            src={image['data_url']}
-                            alt=''
-                            width='300'
-                            className=''
-                          />
-                          <div className='flex justify-between gap-1 border-2'>
-                            <button
-                              className='border-2 rounded-lg p-2 m-2'
-                              onClick={() => onImageUpdate(index)}
-                            >
-                              Update
-                            </button>
-                            <button
-                              onClick={() => onImageRemove(index)}
-                              className='border-2 rounded-lg p-2 m-2'
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </ImageUploading>
             </div>
           </form>
         </div>
