@@ -52,7 +52,9 @@ const Threads = ({ routeUri }) => {
                   />
                 </div>
                 <div className=' flex flex-col gap-3'>
-                  <div className='text-md'>{thread.title}</div>
+                  <div className='text-md'>
+                    <Link href={`/thread/${thread._id}`}>{thread.title}</Link>
+                  </div>
                   <div className='text-base'>{thread.desc}</div>
                   <hr />
                   <div className='flex justify-start items-center'>

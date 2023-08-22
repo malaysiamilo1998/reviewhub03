@@ -11,6 +11,22 @@ const client = createClient(sanityEssentialConfig)
 
 export const createPost = (slug, handlerRef) => {}
 
+export const getThreadById = async threadRef => {
+  const posts = await client.fetch(`*[_type=="thread" && _id=="${threadRef}"]{
+      title, 
+      desc, 
+      content, 
+      "posts": *[_type=="post" && references(^._id)]{
+        _id, 
+        content, 
+        "author_username": author->username, 
+        "author_id": author->_id, 
+        "createdAt": author->createdAt, 
+      }}`)
+
+  return posts
+}
+
 export const getThreads = async slugString => {
   let threads
   if (slugString == '') {
