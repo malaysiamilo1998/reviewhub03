@@ -42,8 +42,8 @@ const TopicAggregator = () => {
         //
         const singleLevelTopics = await getTopicsToplevelLight(slug)
 
-        console.log('current slug=>=><<<' + ref)
-        console.log(singleLevelTopics)
+        // console.log('current slug=>=><<<' + ref)
+        // console.log(singleLevelTopics)
 
         if (singleLevelTopics.length > 0) {
           console.log('rerun! Page')

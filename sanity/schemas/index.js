@@ -10,6 +10,7 @@ import { carousel } from './carousel-banner'
 import { carouselbannerimage } from './carousel-images'
 import { contacttype, contact } from './contact-schema'
 import { ads } from './ads-schema'
+import { threadcomment, userthreadlike } from './thread-comment-like-schema'
 import {
   newssection,
   news,
@@ -25,6 +26,8 @@ export const schemaTypes = [
   avatar,
   topic,
   thread,
+  threadcomment,
+  userthreadlike,
   post,
   ratekey,
   usercompanyrate,

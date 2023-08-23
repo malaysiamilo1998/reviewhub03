@@ -198,6 +198,36 @@ export const deleteCommentByUserCompany = async (user, company) => {
   return result
 }
 
+export const replyComment = async (session, thread, comment) => {
+  const Mutations = [
+    {
+      create: {
+        _type: 'threadcomment',
+        comment: comment,
+        user: {
+          _ref: session.user.id,
+          _type: 'reference'
+        },
+        thread: {
+          _ref: thread,
+          _type: 'reference'
+        }
+      }
+    }
+  ]
+
+  const createReplyResponse = await axios.post(
+    `https://${projectId}.api.sanity.io/v1/data/mutate/${dataset}?returnIds=true`,
+    { mutations: Mutations },
+    {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${tokenWithWriteAccess}`
+      }
+    }
+  )
+}
+
 export const createComment = async (
   cs,
   bns,
