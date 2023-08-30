@@ -1,10 +1,10 @@
 'use client'
 import { useParams } from 'next/navigation'
 import { useState, useRef, useEffect } from 'react'
-// import ReactQuill from 'react-quill'
+import ReactQuill, { Quill } from 'react-quill'
 import Button from '@mui/material/Button'
 import 'react-quill/dist/quill.snow.css'
-import { useForm, useController } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import ReactLoading from 'react-loading'
 // import ImageUploading from 'react-images-uploading'
@@ -15,11 +15,32 @@ import Threads from '@/components/topic/threads'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
-import { getSingleTopicRef, getTopicsToplevelLight } from '@/utils/create-post'
+import {
+  getSingleTopicRef,
+  getTopicsToplevelLight,
+  createPost
+} from '@/utils/create-post'
+
+const modules = {
+  toolbar: [
+    [{ header: '1' }, { header: '2' }, { font: [] }],
+    [{ size: [] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' }
+    ],
+    ['link', 'image', 'video'],
+    ['clean']
+  ]
+}
 
 const TopicAggregator = () => {
   const [showCreateLoading, setShowCreateLoading] = useState()
   const [content, setContent] = useState()
+
   const [currentTopicRef, setCurrentTopicRef] = useState([])
   const params = useParams()
   const { data: session } = useSession()
@@ -65,9 +86,11 @@ const TopicAggregator = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch
-    // control
+    watch,
+    control
   } = useForm()
+
+  const quillRef = useRef(null)
 
   const [images, setImages] = useState([])
   const maxNumber = 69
@@ -80,19 +103,14 @@ const TopicAggregator = () => {
 
   // const { field } = useController({ name: 'gender', control })
   const [showCreatePostForm, setShowCreatePostForm] = useState(false)
-  const contentRef = useRef()
 
-  const createNewPostSubmit = (data, event) => {
+  const createNewPostSubmit = async (data, event) => {
     setShowCreateLoading(true)
-    const newContent = contentRef.current.getEditor().getText()
-    setContent(newContent)
+
+    // setContent(newContent)
     event.preventDefault()
-    const newPostData = {
-      ...data,
-      content: newContent
-    }
-    console.log('newpost==>')
-    console.log(newPostData)
+
+    await createPost(data, session)
   }
 
   return (
@@ -164,7 +182,7 @@ const TopicAggregator = () => {
               </div>
             </div>
 
-            <div className=''>
+            {/* <div className='hidden '>
               <textarea
                 placeholder='Content'
                 className='w-full h-72 border-2 p-2'
@@ -182,6 +200,23 @@ const TopicAggregator = () => {
                 errors={errors}
                 name='content'
                 render={({ message }) => <ErrorMsg msg={message} />}
+              />
+            </div> */}
+            <div className='flex justify-start items-center mb-12 '>
+              <Controller
+                render={({ field }) => {
+                  return (
+                    <ReactQuill
+                      {...field}
+                      theme='snow'
+                      modules={modules}
+                      className='w-full h-48 '
+                    />
+                  )
+                }}
+                name='quillContent'
+                control={control}
+                defaultValue=''
               />
             </div>
             <div className='flex justify-start items-center'>

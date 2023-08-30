@@ -3,13 +3,65 @@ import { sanityEssentialConfig } from '@/sanity-config'
 import axios from 'axios'
 import { createClient } from 'next-sanity'
 
+import { Schema } from '@sanity/schema'
+import { htmlToBlocks, getBlockContentFeatures } from '@sanity/block-tools'
+import { thread } from '@/sanity/schemas/forum-schema'
+
 const projectId = sanityEssentialConfig.projectId
 const dataset = sanityEssentialConfig.dataset
 const tokenWithWriteAccess = sanityEssentialConfig.apiToken
 
 const client = createClient(sanityEssentialConfig)
 
-export const createPost = (slug, handlerRef) => {}
+export const createPost = async (
+  { topicRef, subject, quillContent },
+  session
+) => {
+  const threadSchema = Schema.compile({
+    name: 'root',
+    types: [thread]
+  })
+
+  const blockContentType = threadSchema
+    .get('thread')
+    .fields.find(field => field.name === 'content').type
+
+  const blocks = htmlToBlocks(quillContent, blockContentType)
+
+  // console.log('check html content')
+  // console.log(quillContent)
+  // console.log('check block content')
+  // console.log(blocks)
+  // return
+
+  const Mutations = [
+    {
+      create: {
+        _type: 'thread',
+        title: subject,
+        user: {
+          _ref: session.user.id,
+          _type: 'reference'
+        },
+        topic: {
+          _ref: topicRef,
+          _type: 'reference'
+        },
+        content: blocks
+      }
+    }
+  ]
+  const createThreadResponse = await axios.post(
+    `https://${projectId}.api.sanity.io/v1/data/mutate/${dataset}?returnIds=true`,
+    { mutations: Mutations },
+    {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${tokenWithWriteAccess}`
+      }
+    }
+  )
+}
 
 export const getPostsByThreadId = async threadRef => {
   const posts =
