@@ -56,7 +56,7 @@ const Nav = () => {
               Sign out
             </Button>
             <Link href='/profile'>
-              <Image
+              <img
                 src={
                   session?.user.avatar == null
                     ? session?.user.default_avatar

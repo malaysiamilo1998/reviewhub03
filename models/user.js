@@ -11,13 +11,12 @@ const UserSchema = new Schema({
     unique: [true, 'Username already exists'],
     required: [true, 'username is required'],
     match: [
-      /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
-      'Username invalid, it should contain 8-20 alphanumeric letters and be unique'
+      /^(?=.{8,50}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9\._\-@]+(?<![_.])$/,
+      'Username invalid, it should contain 8-50 alphanumeric letters and be unique'
     ]
   },
   password: {
-    type: String,
-    required: [true, 'password is required']
+    type: String
   },
   image: {
     type: String
@@ -31,5 +30,5 @@ const UserSchema = new Schema({
 })
 
 const User = models.Member || model('Member', UserSchema)
-
+console.log('retrieve model user!')
 export default User

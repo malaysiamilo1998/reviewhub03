@@ -263,9 +263,7 @@ const RegistrerForm = () => {
                 <div className='p-2 md:col-span-2'>
                   <div className='flex justify-start'>
                     <button
-                      onClick={() => {
-                        console.log(quillRef.current.editor.getContents())
-                      }}
+                      onClick={() => {}}
                       className='border-2 hover:border-0 border-red-300 text-sm rounded-lg p-2 m-2 font-extralight hover:bg-red-300 hover:text-lg'
                       type='submit'
                     >

@@ -61,10 +61,16 @@ const handler = NextAuth({
   callbacks: {
     async session ({ session }) {
       const sanityUser = await checkUserExist(session.user.email)
+      console.log(`session user name: ${session.user.email}`)
       console.log('session callback called!' + session.user)
+      console.log(sanityUser)
       // const sessionUser = await User.findOne({ email: session.user.email })
       session.user.id = sanityUser[0]._id.toString()
       session.user.avatar = sanityUser[0].avatar
+        ? sanityUser[0].avatar
+        : sanityUser[0].default_avatar
+        ? sanityUser[0].default_avatar
+        : '/assets/images/default_review_avatar.png'
       session.user.default_avatar = sanityUser[0].default_avatar
       return session
     },
@@ -74,6 +80,7 @@ const handler = NextAuth({
         try {
           // write new user to Mongodb
           await connectToDB()
+          console.log('check mongodb with email: ' + profile.email)
           const userExist = await User.findOne({ email: profile.email })
           if (!userExist) {
             User.create({
@@ -116,7 +123,10 @@ const handler = NextAuth({
 
           return true
         } catch (error) {
-          // console.log('Error checking if user exists: ', error.message)
+          console.log(
+            'Error checking if user exists: mongodb connect',
+            error.message
+          )
           return false
         }
       } else {
