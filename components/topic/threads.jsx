@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getThreads } from '@/utils/create-post'
+import { getThreads, toPlainText } from '@/utils/create-post'
 import Image from 'next/image'
 import { urlFor } from '@/utils/sanity'
 import Link from 'next/link'
@@ -9,22 +9,21 @@ import config from '@/sanity.config'
 import { PortableText } from '@portabletext/react'
 import { useNextSanityImage } from 'next-sanity-image'
 
-const Threads = ({ routeUri }) => {
-  console.log('route url')
-  console.log(routeUri)
+const Threads = ({ routeUri, renderCount }) => {
   const [threads, setThreads] = useState([])
   useEffect(() => {
+    console.log(`rerun threads ${routeUri} : ${renderCount}`)
     ;(async () => {
       const dataThreads = await getThreads(
         routeUri !== undefined && routeUri !== null && routeUri.length > 0
           ? routeUri[routeUri.length - 1]
           : ''
       )
-      // console.log('data threads')
-      // console.log(dataThreads)
+      console.log('data threads')
+      console.log(dataThreads)
       setThreads(dataThreads)
     })()
-  }, [])
+  }, [renderCount])
 
   return (
     <div className='flex flex-col justify-start gap-3 items-start '>

@@ -42,6 +42,7 @@ const TopicAggregator = () => {
   const [content, setContent] = useState()
 
   const [currentTopicRef, setCurrentTopicRef] = useState([])
+  const [renderCount, setRenderCount] = useState(0)
   const params = useParams()
   const { data: session } = useSession()
 
@@ -87,6 +88,7 @@ const TopicAggregator = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
     control
   } = useForm()
 
@@ -111,13 +113,18 @@ const TopicAggregator = () => {
     event.preventDefault()
 
     await createPost(data, session)
+    reset()
+    setShowCreateLoading(false)
+
+    setShowCreatePostForm(false)
+    setRenderCount(prev => prev + 1)
   }
 
   return (
     <div className='h-full w-full'>
       {showCreatePostForm ? (
         // <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-rose-100 via-rose-200 to-rose-200 p-5 rounded-lg'>
-        <div className='z-10 lg:w-2/3 xl:w-4/5 w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg m-5 p-5 shadow-2xl'>
+        <div className='z-10 lg:w-2/3 xl:w-4/5 w-full absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg m-5 p-5 shadow-2xl'>
           <div className='flex justify-end items-center m-3 '>
             <button
               className='p-1 flex justify-end items-center rounded-lg border-2'
@@ -257,7 +264,7 @@ const TopicAggregator = () => {
         </div>
         <StickyTopic currentLevelTopics={currentTopicRef} />
         <div className='bg-gradient-to-r text-2xl from-orange-400 via-red-500 to-purple-600 bg-clip-text text-transparent'>
-          <Threads routeUri={params.slug} />
+          <Threads routeUri={params.slug} renderCount={renderCount} />
         </div>
         {/* <form>
           <div className='pb-12'>

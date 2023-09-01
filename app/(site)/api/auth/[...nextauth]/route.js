@@ -74,8 +74,9 @@ const handler = NextAuth({
       session.user.default_avatar = sanityUser[0].default_avatar
       return session
     },
-    async signIn ({ account, profile }) {
-      console.log('call signin callback')
+    async signIn ({ account, profile, user: { image: profile_img } }) {
+      // console.log('call signin callback')
+      // console.log(profile_img)
       if (account.provider == 'google' || account.provider == 'facebook') {
         try {
           // write new user to Mongodb
@@ -91,7 +92,7 @@ const handler = NextAuth({
             })
           }
           const sanityUser = await checkUserExist(profile.email)
-          console.log('retrieve user from sanity: ' + sanityUser)
+          // console.log('retrieve user from sanity: ' + sanityUser)
           if (!sanityUser[0]) {
             console.log('Save user to sanity')
             const projectId = sanityEssentialConfig.projectId
